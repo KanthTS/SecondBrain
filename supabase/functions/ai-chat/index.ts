@@ -11,8 +11,8 @@ serve(async (req) => {
 
   try {
     const { messages } = await req.json();
-    const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
-    if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY not configured");
+    const GROK_API_KEY = Deno.env.get("GROK_API_KEY");
+    if (!GROK_API_KEY) throw new Error("GROK_API_KEY not configured");
 
     // Get user's knowledge items for context
     const authHeader = req.headers.get("authorization") || "";
@@ -46,14 +46,14 @@ ${knowledgeContext ? `Here are the user's knowledge items:\n${knowledgeContext}\
 
 Be concise, insightful, and helpful. If referencing a knowledge item, mention its title.`;
 
-    const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+    const response = await fetch("https://api.x.ai/v1/chat/completions", {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${LOVABLE_API_KEY}`,
+        Authorization: `Bearer ${GROK_API_KEY}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "google/gemini-3-flash-preview",
+        model: "grok-beta",
         messages: [
           { role: "system", content: systemPrompt },
           ...messages,
